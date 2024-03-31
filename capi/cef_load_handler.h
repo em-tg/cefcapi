@@ -9,7 +9,7 @@
 // handler implementations
 
 struct my_load_handler {
-    // We "inherit" from `cef_load_handler_t`, which in turn "inherits" from
+    // We "extend" `cef_load_handler_t`, which in turn "extends"
     // `cef_base_ref_counted_t`.
     cef_load_handler_t base;
 
@@ -18,7 +18,7 @@ struct my_load_handler {
     struct reference_counter rc;
 };
 
-// See "reference_counting.h" for the meaning of these defines
+// See `reference_counting.h` for the meaning of these defines
 #define REFERENCE_COUNTING_IMPLEMENTATION
 #define T struct my_load_handler
 #define ID(n) load_handler_ ## n

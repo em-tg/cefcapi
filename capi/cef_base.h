@@ -22,6 +22,8 @@
     } \
 } while(0)
 
+// For a struct within a struct, get a pointer to the "containing"
+// struct given a pointer to the "contained" struct.
 #define container_of(ptr, type, member) \
     ((type *)((char *)(1?ptr:&((type *)0)->member) - offsetof(type, member)))
 
@@ -29,11 +31,11 @@
 // cef_base_ref_counted_t
 // ----------------------------------------------------------------------------
 
-///
-// Structure defining the reference count implementation functions.
-// All framework structures must include the cef_base_ref_counted_t
-// structure first.
-///
+// A "fake" implementation of reference counting for structures which have
+// simpler lifetimes.  Most CEF client handlers can use this since they can
+// simply outlive the call to cef_shutdown, after which they are guaranteed to be no
+// longer referenced by CEF.  For user-defined structs which truly need reference
+// counting, see `reference_counting.h`
 
 void CEF_CALLBACK fake_add_ref(cef_base_ref_counted_t* self) { }
 int CEF_CALLBACK fake_release(cef_base_ref_counted_t* self) { return 1; }

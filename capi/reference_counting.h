@@ -1,9 +1,9 @@
 
 // A generic reference counting implementation for use
-// by structs extending cef_base_ref_counted_t.  For an
-// example of how to use this, see cef_load_handler.
+// by structs extending `cef_base_ref_counted_t`.  For an
+// example of how to use this, see `cef_load_handler`.
 
-// Including this header normally only provides the global
+// Just including this header only provides the global
 // declarations.  To specialize it for a handler
 // implementation, you must define the `T` and `ID` macros.
 
@@ -15,7 +15,7 @@
 //    to emit function definitions.  Do not define it in more than
 //    one compilation unit.
 
-// OPTIONAL MACROS
+// OPTIONAL MACROS:
 //  - BASE_NAME: the name of the member of `T` with type
 //    `cef_base_ref_counted_t` (defaults to `base.base`)
 //  - RC_NAME: the name of the member of `T` with type
