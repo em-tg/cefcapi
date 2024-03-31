@@ -35,6 +35,7 @@ void CEF_CALLBACK on_before_close(struct _cef_life_span_handler_t* self,
     //       closing a popup window will exit app while main
     //       window shouldn't be closed.
     cef_quit_message_loop();
+    browser->base.release(&browser->base);
 }
 
 void initialize_cef_life_span_handler(cef_life_span_handler_t* handler) {

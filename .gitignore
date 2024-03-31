@@ -1,2 +1,3 @@
-Release/*
 .idea/
+/cef_extracted
+/Release
