@@ -87,52 +87,54 @@ int main(int argc, char** argv) {
 
     // Initialize CEF.
     printf("cef_initialize\n");
-    cef_initialize(&main_args, &settings, &app, NULL);
+    if(cef_initialize(&main_args, &settings, &app, NULL)){
 
-    // Create GTK window. Alternatively you can pass a NULL handle
-    // to CEF and then it will create a window of its own.
-    // When passing NULL you have to implement cef_life_span_handler_t
-    // and call cef_quit_message_loop from the on_before_close
-    // callback. Example initialization of this handler and its
-    // callback is Windows example.
-    initialize_gtk();
-    cef_window_info_t window_info = {
-        .window_name = cef_string_literal("CEF C Example")
-    };
+        // Create GTK window. Alternatively you can pass a NULL handle
+        // to CEF and then it will create a window of its own.
+        // When passing NULL you have to implement cef_life_span_handler_t
+        // and call cef_quit_message_loop from the on_before_close
+        // callback. Example initialization of this handler and its
+        // callback is Windows example.
+        initialize_gtk();
+        cef_window_info_t window_info = {
+            .window_name = cef_string_literal("CEF C Example")
+        };
 
-    // Copied from upstream cefclient. Install xlib error
-    // handlers so that the application won't be terminated on
-    // non-fatal errors. Must be done after initializing GTK.
-    XSetErrorHandler(x11_error_handler);
-    XSetIOErrorHandler(x11_io_error_handler);
+        // Copied from upstream cefclient. Install xlib error
+        // handlers so that the application won't be terminated on
+        // non-fatal errors. Must be done after initializing GTK.
+        XSetErrorHandler(x11_error_handler);
+        XSetIOErrorHandler(x11_io_error_handler);
 
-    // Initial url
-    cef_string_t cef_url = cef_string_literal("https://google.com");
+        // Initial url
+        cef_string_t cef_url = cef_string_literal("https://google.com");
 
-    // Browser settings. It is mandatory to set the
-    // "size" member.
-    cef_browser_settings_t browser_settings = {
-        .size = sizeof browser_settings
-    };
+        // Browser settings. It is mandatory to set the
+        // "size" member.
+        cef_browser_settings_t browser_settings = {
+            .size = sizeof browser_settings
+        };
 
-    // Client handler and its callbacks
-    struct my_client client = {0};
-    initialize_cef_client(&client);
+        // Client handler and its callbacks
+        struct my_client client = {0};
+        initialize_cef_client(&client);
 
-    // Create browser asynchronously. There is also a
-    // synchronous version of this function available.
-    printf("cef_browser_host_create_browser\n");
-    cef_browser_host_create_browser(&window_info, &client.base, &cef_url,
-                                    &browser_settings, NULL, NULL);
-
-    // Message loop. There is also cef_do_message_loop_work()
-    // that allow for integrating with existing message loops.
-    printf("cef_run_message_loop\n");
-    cef_run_message_loop();
-
-    // Shutdown CEF
-    printf("cef_shutdown\n");
-    cef_shutdown();
+        // Create browser asynchronously. There is also a
+        // synchronous version of this function available.
+        printf("cef_browser_host_create_browser\n");
+        if(cef_browser_host_create_browser(
+            &window_info, &client.base, &cef_url,
+            &browser_settings, NULL, NULL
+        )){
+            // Message loop. There is also cef_do_message_loop_work()
+            // that allow for integrating with existing message loops.
+            printf("cef_run_message_loop\n");
+            cef_run_message_loop();
+        }
+        // Shutdown CEF
+        printf("cef_shutdown\n");
+        cef_shutdown();
+    }
 
     printf("Bye bye!\n");
     return 0;
