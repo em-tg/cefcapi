@@ -26,6 +26,11 @@ static cef_string_t cef_string_wide_literal(char16_t *s){
 
 #define cef_string_literal(s) cef_string_wide_literal(u ## s)
 
+#define platform_atomic _Atomic
+#define platform_atomic_increment(pint) (++*(pint))
+#define platform_atomic_decrement(pint) (--*(pint))
+#define platform_atomic_load(pint) (*(pint))
+
 #include "capi/cef_base.h"
 #include "capi/cef_app.h"
 #include "capi/cef_client.h"
