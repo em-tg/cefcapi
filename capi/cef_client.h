@@ -5,6 +5,7 @@
 
 #include "cef_base.h"
 #include "cef_life_span_handler.h"
+#include "cef_load_handler.h"
 #include "include/capi/cef_client_capi.h"
 
 // ----------------------------------------------------------------------------
@@ -31,13 +32,19 @@ struct _cef_life_span_handler_t* CEF_CALLBACK get_life_span_handler(
     return &container_of(self, struct my_client, base)->life_span_handler;
 }
 
+struct _cef_load_handler_t *CEF_CALLBACK get_load_handler(struct _cef_client_t *self){
+    DEBUG_CALLBACK("get_load_handler\n");
+    return &new_load_handler()->base;
+}
+
 void initialize_cef_client(struct my_client *client) {
     DEBUG_CALLBACK("initialize_client_handler\n");
     client->base.base.size = sizeof *client;
-    initialize_cef_base_ref_counted(&client->base.base);
+    initialize_fake_reference_counting(&client->base.base);
 
     initialize_cef_life_span_handler(&client->life_span_handler);
 
     // callbacks
     client->base.get_life_span_handler = get_life_span_handler;  // Implemented!
+    client->base.get_load_handler = get_load_handler;
 }

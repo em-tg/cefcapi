@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <assert.h>
 
 #include <X11/Xlib.h>
 #include <gdk/gdkx.h>
@@ -107,7 +106,7 @@ int main(int argc, char** argv) {
         XSetIOErrorHandler(x11_io_error_handler);
 
         // Initial url
-        cef_string_t cef_url = cef_string_literal("https://google.com");
+        cef_string_t cef_url = cef_string_literal("https://localhost");
 
         // Browser settings. It is mandatory to set the
         // "size" member.
