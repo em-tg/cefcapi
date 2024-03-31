@@ -9,7 +9,7 @@
     - ~~properly handle errors and free memory~~
     - ~~Add an example of proper reference counting~~
  - update the readme:
-    - build steps
+    - ~~build steps~~
     - builds link is broken
  - all of the above but for Windows
  - Update the windows build to work with msvc

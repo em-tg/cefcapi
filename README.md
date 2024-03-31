@@ -40,9 +40,9 @@ Tested configurations:
 1. Download "Standard Distribution" binaries from Spotify
    Automated Builds for the supported CEF version mentioned
    in the Compatibility section above:
-   http://opensource.spotify.com/cefbuilds/index.html
+   https://cef-builds.spotifycdn.com/index.html
 2. Put the cef*.tar.bz file into third_party
-3. On Linux run "make run" (example using GTK+ 3)
+3. On Linux run "make run" (example uses GTK+ 3)
 4. On Windows run "win_deps.bat" followed by "build.bat"
     - win_deps.bat requires 7zip
 
