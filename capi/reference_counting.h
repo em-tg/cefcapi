@@ -1,3 +1,29 @@
+
+// A generic reference counting implementation for use
+// by structs extending cef_base_ref_counted_t.  For an
+// example of how to use this, see cef_load_handler.
+
+// Including this header normally only provides the global
+// declarations.  To specialize it for a handler
+// implementation, you must define the `T` and `ID` macros.
+
+// MANDATORY MACROS:
+//  - T: The type of the struct to implement reference counting for
+//  - ID(n): All identifiers declared by this header will be passed
+//    to ID so they can be given a prefix
+//  - REFERENCE_COUNTING_IMPLEMENTATION: define this
+//    to emit function definitions.  Do not define it in more than
+//    one compilation unit.
+
+// OPTIONAL MACROS
+//  - BASE_NAME: the name of the member of `T` with type
+//    `cef_base_ref_counted_t` (defaults to `base.base`)
+//  - RC_NAME: the name of the member of `T` with type
+//    `struct reference_counter` (defaults to `rc`)
+//  - ON_DESTROY(self): will be called just before the memory for the struct
+//    is freed
+
+
 #ifndef REFERENCE_COUNTING_H
 #define REFERENCE_COUNTING_H
     struct reference_counter {
@@ -7,6 +33,11 @@
 
 #if defined(T) && defined(ID)
 
+    // Allocate an instance of this struct using malloc,
+    // zero out all fields, then initialize reference
+    // counting.  The returned struct will start with a
+    // reference count of 1.  Returns NULL if memory
+    // for the struct could not be allocated.
     T *ID(create_and_initialize_reference_counting)(void);
 
     #ifdef REFERENCE_COUNTING_IMPLEMENTATION

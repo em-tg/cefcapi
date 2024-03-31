@@ -94,13 +94,6 @@ int main(int argc, char** argv) {
     // Initialize CEF.
     printf("cef_initialize\n");
     if(cef_initialize(&main_args, &settings, &app, NULL)){
-
-        // Create GTK window. Alternatively you can pass a NULL handle
-        // to CEF and then it will create a window of its own.
-        // When passing NULL you have to implement cef_life_span_handler_t
-        // and call cef_quit_message_loop from the on_before_close
-        // callback. Example initialization of this handler and its
-        // callback is Windows example.
         initialize_gtk();
         cef_window_info_t window_info = {
             .window_name = cef_string_literal("CEF C Example")

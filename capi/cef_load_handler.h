@@ -3,16 +3,22 @@
 #include "cef_base.h"
 #include "include/capi/cef_load_handler_capi.h"
 
+// A demonstration of how one might implement reference counting.
+// Our custom cef_load_handler doesn't need reference counting, though, and
+// could just use the same "dummy" reference counting used by the other
+// handler implementations
+
 struct my_load_handler {
+    // We "inherit" from `cef_load_handler_t`, which in turn "inherits" from
+    // `cef_base_ref_counted_t`.
     cef_load_handler_t base;
+
+    // This member must exist in any struct which implements
+    // reference counting using `reference_counting.h`
     struct reference_counter rc;
 };
 
-// Full reference counting isn't needed here, since my_load_handler
-// could simply have the same lifetime as the other handlers, but
-// this is just to demonstrate how you might implement reference counting
-// if it were needed
-
+// See "reference_counting.h" for the meaning of these defines
 #define REFERENCE_COUNTING_IMPLEMENTATION
 #define T struct my_load_handler
 #define ID(n) load_handler_ ## n
