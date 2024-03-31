@@ -16,9 +16,6 @@
 #include "capi/cef_client.h"
 #include "capi/cef_life_span_handler.h"
 
-// Globals
-cef_life_span_handler_t g_life_span_handler = {0};  // not used currently
-
 // Signatures
 int x11_error_handler(Display *display, XErrorEvent *event);
 int x11_io_error_handler(Display *display);
@@ -37,9 +34,6 @@ static cef_string_t cef_string_wide_literal(char16_t *s){
     return ret;
 }
 #define cef_string_literal(s) cef_string_wide_literal(u ## s)
-
-
-
 
 int main(int argc, char** argv) {
     // This executable is called many times, because it
@@ -122,14 +116,13 @@ int main(int argc, char** argv) {
     };
 
     // Client handler and its callbacks
-    cef_client_t client = {0};
+    struct my_client client = {0};
     initialize_cef_client(&client);
-    initialize_cef_life_span_handler(&g_life_span_handler);
 
     // Create browser asynchronously. There is also a
     // synchronous version of this function available.
     printf("cef_browser_host_create_browser\n");
-    cef_browser_host_create_browser(&window_info, &client, &cef_url,
+    cef_browser_host_create_browser(&window_info, &client.base, &cef_url,
                                     &browser_settings, NULL, NULL);
 
     // Message loop. There is also cef_do_message_loop_work()
