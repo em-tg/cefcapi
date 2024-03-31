@@ -17,8 +17,8 @@
 
 void initialize_cef_app(cef_app_t* app) {
     printf("initialize_cef_app\n");
-    app->base.size = sizeof(cef_app_t);
-    initialize_cef_base_ref_counted((cef_base_ref_counted_t*)app);
+    app->base.size = sizeof *app;
+    initialize_cef_base_ref_counted(&app->base);
 
     // callbacks (nothing to do)
 }

@@ -24,12 +24,22 @@ int x11_error_handler(Display *display, XErrorEvent *event);
 int x11_io_error_handler(Display *display);
 
 static size_t wcslen(char16_t *s){
-	size_t ret = 0;
-	if(s){
-		while(s[ret]) ret++;
-	}
-	return ret;
+    size_t ret = 0;
+    if(s){
+        while(s[ret]) ret++;
+    }
+    return ret;
 }
+
+static cef_string_t cef_string_wide_literal(char16_t *s){
+    cef_string_t ret = {0};
+    cef_string_set(s, wcslen(s), &ret, 0);
+    return ret;
+}
+#define cef_string_literal(s) cef_string_wide_literal(u ## s)
+
+
+
 
 int main(int argc, char** argv) {
     // This executable is called many times, because it
@@ -55,13 +65,14 @@ int main(int argc, char** argv) {
     printf("\n\n");
 
     // Main args.
-    cef_main_args_t main_args = {0};
-    main_args.argc = argc;
-    main_args.argv = argv;
-    
+    cef_main_args_t main_args = {
+        .argc = argc,
+        .argv = argv
+    };
+
     cef_app_t app = {0};
     initialize_cef_app(&app);
-    
+
     // Execute subprocesses. It is also possible to have
     // a separate executable for subprocesses by setting
     // cef_settings_t.browser_subprocess_path. In such
@@ -71,13 +82,14 @@ int main(int argc, char** argv) {
     if (code >= 0) {
         _exit(code);
     }
-    
+
     // Application settings. It is mandatory to set the
     // "size" member.
-    cef_settings_t settings = {0};
-    settings.size = sizeof(cef_settings_t);
-    settings.log_severity = LOGSEVERITY_WARNING; // Show only warnings/errors
-    settings.no_sandbox = 1;
+    cef_settings_t settings = {
+        .size = sizeof settings,
+        .log_severity = LOGSEVERITY_WARNING, // Show only warnings/errors
+        .no_sandbox = 1
+    };
 
     // Initialize CEF.
     printf("cef_initialize\n");
@@ -90,9 +102,9 @@ int main(int argc, char** argv) {
     // callback. Example initialization of this handler and its
     // callback is Windows example.
     initialize_gtk();
-    cef_window_info_t window_info = {0};
-    char16_t *window_name = u"CEF C Example";
-    cef_string_set(window_name, wcslen(window_name), &window_info.window_name, 0);
+    cef_window_info_t window_info = {
+        .window_name = cef_string_literal("CEF C Example")
+    };
 
     // Copied from upstream cefclient. Install xlib error
     // handlers so that the application won't be terminated on
@@ -101,15 +113,14 @@ int main(int argc, char** argv) {
     XSetIOErrorHandler(x11_io_error_handler);
 
     // Initial url
-    char url[] = "https://www.google.com/ncr";
-    cef_string_t cef_url = {0};
-    cef_string_utf8_to_utf16(url, strlen(url), &cef_url);
-    
+    cef_string_t cef_url = cef_string_literal("https://google.com");
+
     // Browser settings. It is mandatory to set the
     // "size" member.
-    cef_browser_settings_t browser_settings = {0};
-    browser_settings.size = sizeof(cef_browser_settings_t);
-    
+    cef_browser_settings_t browser_settings = {
+        .size = sizeof browser_settings
+    };
+
     // Client handler and its callbacks
     cef_client_t client = {0};
     initialize_cef_client(&client);

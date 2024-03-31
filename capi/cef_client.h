@@ -30,8 +30,8 @@ struct _cef_life_span_handler_t* CEF_CALLBACK get_life_span_handler(
 
 void initialize_cef_client(cef_client_t* client) {
     DEBUG_CALLBACK("initialize_client_handler\n");
-    client->base.size = sizeof(cef_client_t);
-    initialize_cef_base_ref_counted((cef_base_ref_counted_t*)client);
+    client->base.size = sizeof *client;
+    initialize_cef_base_ref_counted(&client->base);
     // callbacks
     client->get_life_span_handler = get_life_span_handler;  // Implemented!
 }

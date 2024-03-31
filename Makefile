@@ -16,6 +16,9 @@ all: $(EXE)  $(SELF)
 run: all
 	$(EXE)
 
+clean:
+	rm -rf ./cef_extracted ./Release
+
 $(SELF): extract_deps.mk
 	touch $(SELF)
 
