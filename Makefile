@@ -11,7 +11,7 @@ OUT = ./Release
 EXE = $(OUT)/cef_example
 SELF = Makefile
 
-all: $(EXE)  $(SELF)
+all: $(EXE) $(SELF)
 
 run: all
 	$(EXE)

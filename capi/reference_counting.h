@@ -23,13 +23,13 @@
         #endif
 
         static void CEF_CALLBACK ID(add_ref)(cef_base_ref_counted_t *self_in){
-            if(DEBUG_REFERENCE_COUNTING) printf("%p +\n", self_in);
+            if(DEBUG_REFERENCE_COUNTING) printf("%p +\n", (void *)self_in);
             struct reference_counter *rc = &container_of(self_in, T, BASE_NAME)->RC_NAME;
             rc->count++;
         }
 
         static int CEF_CALLBACK ID(release)(cef_base_ref_counted_t *self_in){
-            if(DEBUG_REFERENCE_COUNTING) printf("%p -\n", self_in);
+            if(DEBUG_REFERENCE_COUNTING) printf("%p -\n", (void *)self_in);
             T *self = container_of(self_in, T, BASE_NAME);
             int new_value = --self->RC_NAME.count;
             if(new_value == 0){

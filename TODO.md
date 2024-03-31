@@ -7,7 +7,7 @@
     - ~~get rid of casting where it shows up~~
     - ~~get rid of global variables~~
     - ~~properly handle errors and free memory~~
-    - Add an example of proper reference counting
+    - ~~Add an example of proper reference counting~~
  - update the readme:
     - build steps
     - builds link is broken
