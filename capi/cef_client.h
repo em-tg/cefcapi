@@ -27,18 +27,18 @@ struct my_client {
 ///
 struct _cef_life_span_handler_t* CEF_CALLBACK get_life_span_handler(
         struct _cef_client_t* self) {
-    DEBUG_CALLBACK("get_life_span_handler\n");
+    DEBUG_CALLBACK;
     // Implemented!
     return &container_of(self, struct my_client, base)->life_span_handler;
 }
 
 struct _cef_load_handler_t *CEF_CALLBACK get_load_handler(struct _cef_client_t *self){
-    DEBUG_CALLBACK("get_load_handler\n");
+    DEBUG_CALLBACK;
     return &new_load_handler()->base;
 }
 
 void initialize_cef_client(struct my_client *client) {
-    DEBUG_CALLBACK("initialize_client_handler\n");
+    DEBUG_CALLBACK;
     client->base.base.size = sizeof *client;
     initialize_fake_reference_counting(&client->base.base);
 

@@ -26,7 +26,11 @@ void CEF_CALLBACK on_load_error(
     cef_string_t const *errorText,
     cef_string_t const *failedUrl
 ){
+    DEBUG_CALLBACK;
     printf("Failed to load page: %d\n", errorCode);
+
+    cef_string_t fail_url = cef_string_literal("data:text/plain;charset=utf-8,Failed to Load Page");
+    frame->load_url(frame, &fail_url);
 
     browser->base.release(&browser->base);
     frame->base.release(&frame->base);

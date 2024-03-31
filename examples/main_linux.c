@@ -10,16 +10,7 @@
 
 #include "gtk.h"
 
-#include "capi/cef_base.h"
-#include "capi/cef_app.h"
-#include "capi/cef_client.h"
-#include "capi/cef_life_span_handler.h"
-
-// Signatures
-int x11_error_handler(Display *display, XErrorEvent *event);
-int x11_io_error_handler(Display *display);
-
-static size_t wcslen(char16_t *s){
+static size_t wide_string_len(char16_t *s){
     size_t ret = 0;
     if(s){
         while(s[ret]) ret++;
@@ -29,10 +20,21 @@ static size_t wcslen(char16_t *s){
 
 static cef_string_t cef_string_wide_literal(char16_t *s){
     cef_string_t ret = {0};
-    cef_string_set(s, wcslen(s), &ret, 0);
+    cef_string_set(s, wide_string_len(s), &ret, 0);
     return ret;
 }
+
 #define cef_string_literal(s) cef_string_wide_literal(u ## s)
+
+#include "capi/cef_base.h"
+#include "capi/cef_app.h"
+#include "capi/cef_client.h"
+#include "capi/cef_life_span_handler.h"
+
+// Signatures
+int x11_error_handler(Display *display, XErrorEvent *event);
+int x11_io_error_handler(Display *display);
+
 
 int main(int argc, char** argv) {
     // This executable is called many times, because it
@@ -135,7 +137,7 @@ int main(int argc, char** argv) {
         cef_shutdown();
     }
 
-    printf("Bye bye!\n");
+    printf("Didn't crash!\n");
     return 0;
 }
 

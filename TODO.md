@@ -14,6 +14,8 @@
     - ~~build steps~~
     - ~~builds link is broken~~
 
+ - Do something better than print a message on failure to load
+
 ## Windows
  - Update the windows build to work with msvc
  - update build to not require any manual steps other than

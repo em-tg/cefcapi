@@ -14,13 +14,13 @@
 
 // Print only the first execution of the callback,
 // ignore the subsequent.
-#define DEBUG_CALLBACK(x) { \
+#define DEBUG_CALLBACK do { \
     static int first_call = 1; \
     if (first_call == 1) { \
         first_call = 0; \
-        printf(x); \
+        printf("%s\n", __func__); \
     } \
-}
+} while(0)
 
 #define container_of(ptr, type, member) \
     ((type *)((char *)(1?ptr:&((type *)0)->member) - offsetof(type, member)))
