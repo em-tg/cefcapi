@@ -1,7 +1,7 @@
 @echo off
 
 if not exist .\Release (
-	call .\deps.bat
+    call .\deps.bat
 )
 
 set CC=x86_64-w64-mingw32-gcc
