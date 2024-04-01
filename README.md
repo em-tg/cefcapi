@@ -18,7 +18,6 @@ Table of contents:
 * [Support development](#support-development)
 * [Updating CEF version](#updating-cef-version)
 
-
 ## Examples
 
 - Windows: see [main_win.c](examples/main_win.c)
@@ -29,8 +28,8 @@ Table of contents:
 
 Tested configurations:
 - Windows:
-    - Binary: `cef_binary_3.3202.1692.g18a939d_windows32.tar.bz2`
-    - Compilers: mingw-gcc 5.3.0 and TDM-gcc 5.1.0 on Windows 7 64-bit
+    - Binary: `cef_binary_123.0.7+g6a21509+chromium-123.0.6312.46_windows64_beta.tar.bz2`
+    - Compilers: mingw-w64 gcc 11.2.0 and Visual Studio 2022 on Windows 10 64-bit
 - Linux:
     - Binary: `cef_binary_123.0.7+g6a21509+chromium-123.0.6312.46_linux64_beta.tar.bz2`
     - Compiler: Linux: gcc 9.4.0 on Ubuntu 20.04 64-bit
@@ -43,8 +42,8 @@ Tested configurations:
    https://cef-builds.spotifycdn.com/index.html
 2. Put the cef*.tar.bz file into third_party
 3. On Linux run "make run" (example uses GTK+ 3)
-4. On Windows run "win_deps.bat" followed by "build.bat"
-    - win_deps.bat requires 7zip
+4. On Windows run "build_msvc.bat" or "build_gcc.bat" to build with MSVC or MinGW, respectively
+    - 7zip will need to be installed, or you will need to extract cef manually
 
 ## Support development
 
