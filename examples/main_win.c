@@ -5,16 +5,27 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <include/capi/cef_app_capi.h>
+#include <include/cef_version.h>
+
+#define platform_atomic volatile
+#define platform_atomic_increment InterlockedIncrement
+#define platform_atomic_decrement InterlockedDecrement
+#define platform_atomic_load(p) InterlockedOr((p), 0)
+
+static cef_string_t cef_string_wide_literal(wchar_t *s){
+    cef_string_t ret = {0};
+    cef_string_set(s, wcslen(s), &ret, 0);
+    return ret;
+}
+#define cef_string_literal(s) cef_string_wide_literal(L ## s)
 
 #include "capi/cef_base.h"
 #include "capi/cef_app.h"
 #include "capi/cef_client.h"
 #include "capi/cef_life_span_handler.h"
 
-#include "include/cef_version_win.h"
 
-// Globals
-cef_life_span_handler_t g_life_span_handler = {};
 
 
 int main(int argc, char** argv) {
@@ -46,11 +57,11 @@ int main(int argc, char** argv) {
     }
 
     // Main args
-    cef_main_args_t main_args = {};
+    cef_main_args_t main_args = {0};
     main_args.instance = GetModuleHandle(NULL);
 
     // Cef app
-    cef_app_t app = {};
+    cef_app_t app = {0};
     initialize_cef_app(&app);
     
     // Execute subprocesses. It is also possible to have
@@ -65,7 +76,7 @@ int main(int argc, char** argv) {
     
     // Application settings. It is mandatory to set the
     // "size" member.
-    cef_settings_t settings = {};
+    cef_settings_t settings = {0};
     settings.size = sizeof(cef_settings_t);
     settings.log_severity = LOGSEVERITY_WARNING; // Show only warnings/errors
     settings.no_sandbox = 1;
@@ -75,42 +86,41 @@ int main(int argc, char** argv) {
     cef_initialize(&main_args, &settings, &app, NULL);
 
     // Window info
-    cef_window_info_t window_info = {};
+    cef_window_info_t window_info = {0};
     window_info.style = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN \
             | WS_CLIPSIBLINGS | WS_VISIBLE;
     window_info.parent_window = NULL;
-    window_info.x = CW_USEDEFAULT;
-    window_info.y = CW_USEDEFAULT;
-    window_info.width = CW_USEDEFAULT;
-    window_info.height = CW_USEDEFAULT;
+    window_info.bounds.x = CW_USEDEFAULT;
+    window_info.bounds.y = CW_USEDEFAULT;
+    window_info.bounds.width = CW_USEDEFAULT;
+    window_info.bounds.height = CW_USEDEFAULT;
 
     // Window info - window title
     char window_name[] = "cefcapi example";
-    cef_string_t cef_window_name = {};
+    cef_string_t cef_window_name = {0};
     cef_string_utf8_to_utf16(window_name, strlen(window_name),
                              &cef_window_name);
     window_info.window_name = cef_window_name;
 
     // Initial url
     char url[] = "https://www.google.com/ncr";
-    cef_string_t cef_url = {};
+    cef_string_t cef_url = {0};
     cef_string_utf8_to_utf16(url, strlen(url), &cef_url);
 
     // Browser settings. It is mandatory to set the
     // "size" member.
-    cef_browser_settings_t browser_settings = {};
+    cef_browser_settings_t browser_settings = {0};
     browser_settings.size = sizeof(cef_browser_settings_t);
     
     // Client handlers
-    cef_client_t client = {};
+    struct my_client client = {0};
     initialize_cef_client(&client);
-    initialize_cef_life_span_handler(&g_life_span_handler);
 
     // Create browser asynchronously. There is also a
     // synchronous version of this function available.
     printf("cef_browser_host_create_browser\n");
-    cef_browser_host_create_browser(&window_info, &client, &cef_url,
-                                    &browser_settings, NULL);
+    cef_browser_host_create_browser(&window_info, &client.base, &cef_url,
+                                    &browser_settings, NULL, NULL);
 
     // Message loop. There is also cef_do_message_loop_work()
     // that allow for integrating with existing message loops.
@@ -127,5 +137,6 @@ int main(int argc, char** argv) {
     printf("cef_shutdown\n");
     cef_shutdown();
 
+    printf("Didn't crash!\n");
     return 0;
 }
