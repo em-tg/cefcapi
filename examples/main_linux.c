@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
         XSetIOErrorHandler(x11_io_error_handler);
 
         // Initial url
-        cef_string_t cef_url = cef_string_literal("https://localhost");
+        cef_string_t cef_url = cef_string_literal("https://www.google.com/ncr");
 
         // Browser settings. It is mandatory to set the
         // "size" member.
