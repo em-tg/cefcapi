@@ -3,7 +3,6 @@
 
 #pragma once
 
-#include <unistd.h>
 #include "include/capi/cef_base_capi.h"
 #include "reference_counting.h"
 

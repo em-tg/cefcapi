@@ -1,8 +1,6 @@
 @echo off
 
-if exist cef_extracted rmdir /q /s cef_extracted
-if exist cef_partially_extracted rmdir /q /s cef_partially_extracted
-if exist .\Release rmdir /q /s .\Release
+call .\clean.bat
 
 for %%i in (.\third_party\*.tar.bz2) do (
 	"C:\Program Files\7-Zip\7z.exe" x "%%i" -o.\cef_partially_extracted
