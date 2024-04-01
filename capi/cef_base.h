@@ -32,9 +32,9 @@
 
 // A "fake" implementation of reference counting for structures which have
 // simpler lifetimes.  Most CEF client handlers can use this since they can
-// simply outlive the call to cef_shutdown, after which they are guaranteed to be no
-// longer referenced by CEF.  For user-defined structs which truly need reference
-// counting, see `reference_counting.h`
+// simply outlive the call to cef_shutdown, after which they are guaranteed to no
+// longer be referenced by CEF.  For user-defined structs which truly need reference
+// counting, see `reference_counting.h`.
 
 void CEF_CALLBACK fake_add_ref(cef_base_ref_counted_t* self) { }
 int CEF_CALLBACK fake_release(cef_base_ref_counted_t* self) { return 1; }
