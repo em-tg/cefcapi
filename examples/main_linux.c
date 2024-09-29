@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
         .argv = argv
     };
 
-    cef_app_t app = {0};
+    struct my_cef_app app = {0};
     initialize_cef_app(&app);
 
     // Execute subprocesses. It is also possible to have
@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
     // cef_settings_t.browser_subprocess_path. In such
     // case cef_execute_process should not be called here.
     printf("cef_execute_process, argc=%d\n", argc);
-    int code = cef_execute_process(&main_args, &app, NULL);
+    int code = cef_execute_process(&main_args, &app.base, NULL);
     if (code >= 0) {
         _exit(code);
     }
@@ -89,14 +89,16 @@ int main(int argc, char** argv) {
         .size = sizeof settings,
         .log_severity = LOGSEVERITY_WARNING, // Show only warnings/errors
         .no_sandbox = 1
+        //TODO: .root_cache_path = ...
     };
 
     // Initialize CEF.
     printf("cef_initialize\n");
-    if(cef_initialize(&main_args, &settings, &app, NULL)){
+    if(cef_initialize(&main_args, &settings, &app.base, NULL)){
         initialize_gtk();
         cef_window_info_t window_info = {
-            .window_name = cef_string_literal("CEF C Example")
+            .window_name = cef_string_literal("CEF C Example"),
+            .runtime_style = CEF_RUNTIME_STYLE_ALLOY // Disable Chrome's chrome.
         };
 
         // Copied from upstream cefclient. Install xlib error
