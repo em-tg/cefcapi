@@ -57,6 +57,30 @@ int CEF_CALLBACK on_already_running_app_relaunch(
     return 1;
 }
 
+///
+/// Provides an opportunity to view and/or modify command-line arguments
+/// before processing by CEF and Chromium. The |process_type| value will be
+/// NULL for the browser process. Do not keep a reference to the
+/// cef_command_line_t object passed to this function. The
+/// cef_settings_t.command_line_args_disabled value can be used to start with
+/// an NULL command-line object. Any values specified in CefSettings that
+/// equate to command-line arguments will be set before this function is
+/// called. Be cautious when using this function to modify command-line
+/// arguments for non-browser processes as this may result in undefined
+/// behavior including crashes.
+///
+void CEF_CALLBACK on_before_command_line_processing(
+    struct _cef_app_t* self,
+    const cef_string_t* process_type,
+    struct _cef_command_line_t* command_line
+){
+    // Workaround for the GPU process crashing on windows for some
+    // reason.  Doesn't happen with MinGW either, which is strange.
+    // https://github.com/chromiumembedded/cef/issues/3765
+    cef_string_t arg = cef_string_literal("use-angle");
+    command_line->append_switch(command_line, &arg);
+    command_line->base.release(&command_line->base);
+}
 
 void initialize_cef_app(struct my_cef_app* app) {
     printf("initialize_cef_app\n");
@@ -69,5 +93,6 @@ void initialize_cef_app(struct my_cef_app* app) {
     // callbacks
 
     app->base.get_browser_process_handler = &get_browser_process_handler;
+    app->base.on_before_command_line_processing = &on_before_command_line_processing;
     app->process_handler.on_already_running_app_relaunch = &on_already_running_app_relaunch;
 }
