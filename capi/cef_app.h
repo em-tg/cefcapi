@@ -74,11 +74,13 @@ void CEF_CALLBACK on_before_command_line_processing(
     const cef_string_t* process_type,
     struct _cef_command_line_t* command_line
 ){
-    // Workaround for the GPU process crashing on windows for some
-    // reason.  Doesn't happen with MinGW either, which is strange.
-    // https://github.com/chromiumembedded/cef/issues/3765
-    cef_string_t arg = cef_string_literal("use-angle");
-    command_line->append_switch(command_line, &arg);
+    if(process_type == NULL){
+        // Workaround for the GPU process crashing on windows for some
+        // reason.  Doesn't happen with MinGW either, which is strange.
+        // https://github.com/chromiumembedded/cef/issues/3765
+        cef_string_t arg = cef_string_literal("use-angle");
+        command_line->append_switch(command_line, &arg);
+    }
     command_line->base.release(&command_line->base);
 }
 
