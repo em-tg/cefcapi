@@ -28,10 +28,10 @@ Table of contents:
 
 Tested configurations:
 - Windows:
-    - Binary: `cef_binary_123.0.7+g6a21509+chromium-123.0.6312.46_windows64_beta.tar.bz2`
+    - Binary: `cef_binary_129.0.6+ga918aa7+chromium-129.0.6668.29_windows64_beta.tar.bz2`
     - Compilers: mingw-w64 gcc 11.2.0 and Visual Studio 2022 on Windows 10 64-bit
 - Linux:
-    - Binary: `cef_binary_123.0.7+g6a21509+chromium-123.0.6312.46_linux64_beta.tar.bz2`
+    - Binary: `cef_binary_129.0.6+ga918aa7+chromium-129.0.6668.29_linux64_beta.tar.bz2`
     - Compiler: Linux: gcc 9.4.0 on Ubuntu 20.04 64-bit
 
 ## Getting started
