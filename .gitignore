@@ -4,3 +4,5 @@
 /Release
 *.obj
 *.pdb
+*.res
+*.coff
