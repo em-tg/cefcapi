@@ -12,4 +12,9 @@ set LFLAGS=-L.\Release -lcef
 
 set CFILES=.\examples\main_win.c
 
-%CC% %CFLAGS% -o .\Release\cef_example.exe %CFILES% %LFLAGS%
+set RC=x86_64-w64-mingw32-windres
+set RCFILE=main.rc
+
+%RC% -o out.coff %RCFILE%
+
+%CC% %CFLAGS% -o .\Release\cef_example.exe %CFILES% out.coff %LFLAGS%
