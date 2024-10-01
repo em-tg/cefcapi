@@ -21,4 +21,9 @@ set LFLAGS=/link /LIBPATH:.\Release /SUBSYSTEM:CONSOLE libcef.lib
 
 set CFILES=.\examples\main_win.c
 
-%CC% %CFLAGS% /Fe.\Release\cef_example.exe %CFILES% %LFLAGS%
+set RC=rc
+set RCFILE=main.rc
+
+%RC% /nologo /fo browser.res %RCFILE%
+
+%CC% %CFLAGS% /Fe.\Release\cef_example.exe browser.res %CFILES% %LFLAGS%
